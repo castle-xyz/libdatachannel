@@ -277,6 +277,10 @@ set_target_properties(datachannel PROPERTIES
 	CXX_STANDARD 17
 	CXX_VISIBILITY_PRESET default)
 
+if(ANDROID)
+	add_custom_command(TARGET datachannel POST_BUILD COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:datachannel>)
+endif()
+
 if(APPLE)
 	set_target_properties(datachannel PROPERTIES
 		VERSION ${PROJECT_VERSION_MAJOR}
@@ -295,6 +299,10 @@ set_target_properties(datachannel-static PROPERTIES
 	CXX_STANDARD 17)
 target_compile_definitions(datachannel-static PRIVATE RTC_EXPORTS)
 target_compile_definitions(datachannel-static PUBLIC RTC_STATIC)
+
+if(ANDROID)
+	add_custom_command(TARGET datachannel-static POST_BUILD COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:datachannel-static>)
+endif()
 
 target_include_directories(datachannel PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
